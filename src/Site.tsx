@@ -4,6 +4,7 @@ import Hero from "./components/sections/Hero";
 import About from "./components/sections/About";
 import CampusLife from "./components/sections/CampusLife";
 import Academics from "./components/sections/Academics";
+import Footer from "./components/sections/Footer";
 
 const Header = () => {
   return (
@@ -123,6 +124,7 @@ const Site = () => {
       <About />
       <CampusLife />
       <Academics />
+      <Footer />
       {/* Add more sections below if needed */}
     </div>
   );

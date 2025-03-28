@@ -9,7 +9,7 @@ interface Prop {
 export const PrivateRoute = ({ element }: Prop) => {
   const { user } = useAuthStore();
 
-  return user ? element : <Navigate to="/login" />;
+  return user ? element : <Navigate to="/dashboard/login" />;
 };
 
 export default PrivateRoute;

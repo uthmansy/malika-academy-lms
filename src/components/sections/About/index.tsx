@@ -62,7 +62,7 @@ const About: React.FC = () => {
                           transform hover:scale-[1.01] transition-transform duration-300"
             >
               <img
-                src="https://images.unsplash.com/photo-1588681664899-f1423a7c365a?auto=format&w=1080"
+                src="https://plus.unsplash.com/premium_photo-1682284353484-4e16001c58eb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Students in classroom"
                 className="object-cover w-full h-full"
               />
@@ -94,10 +94,10 @@ const About: React.FC = () => {
           ].map((item, idx) => (
             <div
               key={idx}
-              className="p-10 bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all 
+              className="p-12 bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all 
                         border border-gray-100 hover:border-primary/10"
             >
-              <div className="space-y-6">
+              <div className="space-y-3">
                 <div className="w-14 h-14 bg-primary/10 text-primary rounded-2xl flex items-center justify-center">
                   <item.icon className="w-8 h-8" />
                 </div>
@@ -130,29 +130,29 @@ const About: React.FC = () => {
                 icon: FaBook,
                 title: "Nursery",
                 text: "Play-based learning for ages 3-5",
-                color: "bg-secondary",
+                color: "bg-primary",
               },
               {
                 icon: FaPuzzlePiece,
                 title: "Primary",
                 text: "Foundational education for ages 6-11",
-                color: "bg-tertiary",
+                color: "bg-primary",
               },
               {
                 icon: IoSparkles,
                 title: "Secondary",
                 text: "Advanced curriculum for ages 12-17",
-                color: "bg-accent",
+                color: "bg-primary",
               },
             ].map((item, idx) => (
               <div
                 key={idx}
-                className={`${item.color} p-10 rounded-3xl text-white transform hover:scale-[1.02] 
+                className={`${item.color} p-12 rounded-3xl text-white transform hover:scale-[1.02] 
                           transition-all duration-300 shadow-2xl hover:shadow-3xl`}
               >
-                <div className="space-y-6">
+                <div className="space-y-3">
                   <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
-                    <item.icon className="w-10 h-10" />
+                    <item.icon className="w-10 h-10 text-white" />
                   </div>
                   <h3 className="text-3xl font-bold">{item.title}</h3>
                   <p className="text-lg leading-relaxed">{item.text}</p>
@@ -186,14 +186,14 @@ const About: React.FC = () => {
           ].map((item, idx) => (
             <div
               key={idx}
-              className="p-8 bg-white rounded-2xl hover:bg-gray-50 transition-colors
+              className="p-12 bg-primary rounded-2xl hover:bg-primary/95 transition-colors
                         border border-gray-100 hover:border-primary/20 shadow-lg hover:shadow-xl"
             >
-              <div className="space-y-4">
-                <div className="w-14 h-14 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
-                  <item.icon className="w-7 h-7" />
+              <div className="space-y-3">
+                <div className="w-14 h-14  text-primary bg-white/30 rounded-xl flex items-center justify-center">
+                  <item.icon className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900">
+                <h3 className="text-xl font-semibold text-white">
                   {item.text}
                 </h3>
               </div>
