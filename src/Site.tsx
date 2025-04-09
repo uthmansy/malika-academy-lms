@@ -1,10 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import Container from "./components/Container";
-import Hero from "./components/sections/Hero";
-import About from "./components/sections/About";
-import CampusLife from "./components/sections/CampusLife";
-import Academics from "./components/sections/Academics";
 import Footer from "./components/sections/Footer";
+import Home from "./components/SitePages/Home";
+import BlogPosts from "./components/sections/BlogPosts";
 
 const Header = () => {
   return (
@@ -36,12 +34,12 @@ const Header = () => {
           {/* Nav links */}
           <ul className="hidden md:flex space-x-6">
             <li>
-              <a
-                href="#"
+              <Link
+                to={"/"}
                 className="text-gray-700 hover:text-primary transition-colors"
               >
                 Home
-              </a>
+              </Link>
             </li>
             <li>
               <a
@@ -76,20 +74,20 @@ const Header = () => {
               </a>
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                to={"/blog"}
                 className="text-gray-700 hover:text-primary transition-colors"
               >
                 Blog
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                to={"/about"}
                 className="text-gray-700 hover:text-primary transition-colors"
               >
                 Contact
-              </a>
+              </Link>
             </li>
           </ul>
 
@@ -120,12 +118,12 @@ const Site = () => {
   return (
     <div className="font-sans text-gray-900">
       <Header />
-      <Hero />
-      <About />
-      <CampusLife />
-      <Academics />
+      <Routes>
+        <Route path="/*" element={<Home />} />
+        <Route path="/blog/*" element={<BlogPosts />} />
+        <Route path="/about/*" element={<div>about page</div>} />
+      </Routes>
       <Footer />
-      {/* Add more sections below if needed */}
     </div>
   );
 };

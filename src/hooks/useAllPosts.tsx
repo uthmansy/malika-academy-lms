@@ -18,6 +18,7 @@ interface HookReturn {
   hasNextPage: boolean | undefined;
   isFetchingNextPage: boolean;
   isRefetching: boolean;
+  error: unknown;
 }
 
 function useAllPosts(): HookReturn {
@@ -31,6 +32,7 @@ function useAllPosts(): HookReturn {
   const {
     data,
     isLoading,
+    error,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -51,6 +53,7 @@ function useAllPosts(): HookReturn {
 
   return {
     posts,
+    error,
     isLoading,
     fetchNextPage,
     hasNextPage,
