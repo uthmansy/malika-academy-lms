@@ -25,7 +25,15 @@ function ViewPost({ postId }: Props) {
             <Spin />
           </div>
         ) : post ? (
-          <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          <>
+            {post.feature_image_url && (
+              <img
+                src={post.feature_image_url}
+                className="aspect-video object-cover"
+              />
+            )}
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          </>
         ) : (
           <Empty />
         )}

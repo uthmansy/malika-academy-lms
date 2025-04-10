@@ -68,7 +68,14 @@ function BlogPosts() {
           >
             <div className="p-6 space-y-4">
               {/* Optional image placeholder */}
-              <div className="h-48 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg"></div>
+              <div className="h-48 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
+                {post.feature_image_url && (
+                  <img
+                    src={post.feature_image_url}
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
 
               <header>
                 <h2 className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors">

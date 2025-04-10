@@ -5,6 +5,7 @@ import {
   Text,
   StyleSheet,
   Font,
+  Image,
 } from "@react-pdf/renderer";
 import {
   ClassSubjectJoined,
@@ -12,6 +13,7 @@ import {
   TerminalResultJoined,
 } from "../../types/db";
 import { getGrade } from "../../helpers/functions";
+import { LOGO } from "../../assets/images";
 
 // Register font (make sure to provide actual font files)
 Font.register({
@@ -29,16 +31,24 @@ const styles = StyleSheet.create({
     fontSize: 8,
     fontFamily: "Times-Roman",
   },
+  logo: {
+    width: 100,
+    height: "auto",
+  },
   header: {
     borderBottomWidth: 1,
     borderBottomColor: "#000",
     paddingBottom: 10,
     marginBottom: 15,
     textAlign: "center",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   schoolName: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 20,
+    fontWeight: "extrabold",
     marginBottom: 4,
   },
   reportTitle: {
@@ -148,12 +158,21 @@ const ReportCard = ({ record, scores, subjects }: Props) => {
       <Page size="A4" style={styles.page}>
         {/* Header Section */}
         <View style={styles.header}>
-          <Text style={styles.schoolName}>MALIKA INTERNATIONAL ACADEMY</Text>
-          <Text>ADDRESS: SHEIK JAFAR ROAD ZAWACIKI</Text>
-          <Text>
-            TEL: 09033369420, 07036179399 E-MAIL: malikaschoolng@gmail.com
-          </Text>
-          <Text>www.malikainternationalacademic.com</Text>
+          <View>
+            <Image src={LOGO} style={styles.logo} />
+          </View>
+          <View style={{ textAlign: "center", flexGrow: 1 }}>
+            <Text style={styles.schoolName}>MALIKA INTERNATIONAL ACADEMY</Text>
+            <Text style={{ fontSize: "14" }}>
+              ADDRESS: SHEIK JAFAR ROAD ZAWACIKI
+            </Text>
+            <Text style={{ fontSize: "12" }}>
+              TEL: 09033369420, 07036179399 E-MAIL: malikaschoolng@gmail.com
+            </Text>
+            <Text style={{ fontSize: "12" }}>
+              www.malikainternationalacademic.com
+            </Text>
+          </View>
         </View>
 
         {/* Report Title */}

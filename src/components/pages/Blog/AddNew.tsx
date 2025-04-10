@@ -1,6 +1,8 @@
 import { Button, Form, Input, Modal } from "antd";
 import useAddBlogPost from "../../../hooks/useAddBlogPost";
 import TextEditor from "../../TextEditor";
+import Dragger from "antd/es/upload/Dragger";
+import { InboxOutlined } from "@ant-design/icons";
 
 function AddNew() {
   const {
@@ -31,6 +33,27 @@ function AddNew() {
             rules={[{ required: true, message: "Please enter a title" }]}
           >
             <Input placeholder="Enter title here" />
+          </Form.Item>
+          <Form.Item
+            label="Feature Image"
+            name="featured_image"
+            rules={[{ required: true, message: "Please upload an image" }]}
+          >
+            <Dragger
+              name="featured_image"
+              multiple={false}
+              beforeUpload={() => {
+                return false;
+              }}
+              listType="picture"
+            >
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined />
+              </p>
+              <p className="ant-upload-text">
+                Click or drag file to this area to upload
+              </p>
+            </Dragger>
           </Form.Item>
         </Form>
         <TextEditor isLoading={isLoading} onSave={handleSubmit} />

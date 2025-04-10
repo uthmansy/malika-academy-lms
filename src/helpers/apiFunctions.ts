@@ -264,8 +264,8 @@ export const getAllStudents = async ({
   pageParam = 1,
   dateFilter,
   debouncedSearchTerm,
-  classroomFilter,
-}: ApiFilterOptions): Promise<Student[]> => {
+}: // classroomFilter,
+ApiFilterOptions): Promise<Student[]> => {
   let query = supabase
     .from("students")
     .select("*")

@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { ZodError } from "zod";
 import useAuthStore from "../store/auth";
 import { PostSchema } from "../zodSchemas/post";
-import { addPost } from "../helpers/apiFunctions";
+import { addPost, uploadImage } from "../helpers/apiFunctions";
 
 interface HookReturn {
   isModalOpen: boolean;
@@ -26,6 +26,9 @@ function useAddBlogPost(): HookReturn {
     mutationFn: async (content: string) => {
       try {
         const title = form.getFieldValue("title");
+        const featured_image = form.getFieldValue("featured_image");
+        const isLt300KB = featured_image?.file.size / 1024 < 300;
+
         if (!title) {
           form.setFields([
             {
@@ -34,6 +37,22 @@ function useAddBlogPost(): HookReturn {
             },
           ]);
           throw new Error("Title is required");
+        } else if (!featured_image) {
+          form.setFields([
+            {
+              name: "featured_image",
+              errors: ["Feature Image is required!"],
+            },
+          ]);
+          throw new Error("Feature Image is required");
+        } else if (!isLt300KB) {
+          form.setFields([
+            {
+              name: "featured_image",
+              errors: ["Image Must be less than 300kb"],
+            },
+          ]);
+          throw new Error("Feature Image cannot be more than 300kb");
         } else {
           // Clear any existing error if title is not empty
           form.setFields([
@@ -41,10 +60,23 @@ function useAddBlogPost(): HookReturn {
               name: "title",
               errors: [],
             },
+            {
+              name: "featured_image",
+              errors: [],
+            },
           ]);
           const values = form.getFieldsValue();
           values.content = content;
+          if (!content) throw new Error("Content is Required");
           values.author = userProfile?.username;
+          if (values.featured_image) {
+            const data = await uploadImage(
+              values.featured_image.file,
+              "featured-post-images"
+            );
+            values.feature_image_path = data.filePath;
+            values.feature_image_url = data.publicUrl;
+          }
           const payload = await PostSchema.parseAsync(values);
           await addPost(payload);
         }
@@ -62,7 +94,9 @@ function useAddBlogPost(): HookReturn {
       }
     },
     onError: (error) => {
-      if (error instanceof Error) {
+      if (error instanceof ZodError) {
+        message.error(error.errors[0].message);
+      } else if (error instanceof Error) {
         message.error(error.message);
       } else {
         message.error("An unexpected error occurred");
