@@ -29,6 +29,7 @@ import {
   UserProfile,
 } from "../types/db";
 import { UpdateStudentScoreInput } from "../types/forms";
+import { UpdateClassType } from "../zodSchemas/classes";
 import { CreatePost } from "../zodSchemas/post";
 
 export const getUsers = async (
@@ -114,7 +115,9 @@ export const getClasses = async (
 ): Promise<ClassJoined[]> => {
   const { data, error } = await supabase
     .from("classes")
-    .select("*, section_table:section_id(*), form_master:form_master_id(*)")
+    .select(
+      "*, section_table:section_id(*), form_master:form_master_id(*), next_class:next_class_id(name)"
+    )
     .range((pageNumber - 1) * 50, pageNumber * 50 - 1)
     .order("created_at", { ascending: false });
 
@@ -642,6 +645,17 @@ export const updateStudentScore = async (
 ): Promise<void> => {
   const { error } = await supabase
     .from("student_scores")
+    .update(payload)
+    .eq("id", payload.id);
+
+  if (error) {
+    console.error(error);
+    throw new Error(error.message);
+  }
+};
+export const updateClass = async (payload: UpdateClassType): Promise<void> => {
+  const { error } = await supabase
+    .from("classes")
     .update(payload)
     .eq("id", payload.id);
 

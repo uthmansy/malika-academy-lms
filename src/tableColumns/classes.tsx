@@ -30,6 +30,12 @@ export const classesAdminColumns: ColumnsType<ClassJoined> = [
     render: (_, record) => <span>{record.section_table.name}</span>,
   },
   {
+    title: "Next Class",
+    dataIndex: "next_class_id",
+    key: "next_class_id",
+    render: (_, record) => <span>{record.next_class?.name}</span>,
+  },
+  {
     title: "Form Master",
     dataIndex: "form_master_id",
     key: "form_master_id",
@@ -39,12 +45,12 @@ export const classesAdminColumns: ColumnsType<ClassJoined> = [
       </span>
     ),
   },
-  {
-    title: "Academic Year",
-    dataIndex: "academic_year",
-    key: "academic_year",
-    render: (text) => <span>{text}</span>,
-  },
+  // {
+  //   title: "Academic Year",
+  //   dataIndex: "academic_year",
+  //   key: "academic_year",
+  //   render: (text) => <span>{text}</span>,
+  // },
   {
     title: "Action",
     key: "action",

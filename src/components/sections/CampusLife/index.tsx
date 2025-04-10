@@ -123,12 +123,12 @@ const CampusLife: React.FC = () => {
         </div>
 
         {/* Student Testimonials */}
-        <div className="bg-primary/5 py-20 rounded-3xl mb-16">
+        <div className="bg-primary px-5 md:px-12 py-20 rounded-3xl mb-16">
           <div className="max-w-4xl mx-auto text-center mb-16 px-4">
-            <h3 className="text-4xl font-bold text-gray-900 mb-4">
+            <h3 className="text-4xl font-bold text-white mb-4">
               Student Voices
             </h3>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-white">
               Hear directly from our vibrant student community
             </p>
           </div>

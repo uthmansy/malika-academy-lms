@@ -46,6 +46,7 @@ export type Section = Database["public"]["Tables"]["school_sections"]["Row"];
 export interface ClassJoined extends Class {
   section_table: Section;
   form_master: Teacher;
+  next_class: Class | null;
 }
 export interface ClassroomJoined extends Classroom {
   class_table: Class;

@@ -259,13 +259,18 @@ const About: React.FC = () => {
       </Container>
 
       {/* Testimonials */}
-      <div className="bg-gray-50 py-20 md:py-28">
+      <div
+        className="py-20 md:py-28 bg-cover bg-center"
+        style={{
+          backgroundImage: `linear-gradient(rgba(99, 102, 241, 0.8), rgba(99, 102, 241, 0.5)), url('https://plus.unsplash.com/premium_photo-1682284353484-4e16001c58eb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
+        }}
+      >
         <Container>
           <div className="max-w-4xl mx-auto text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Voices of Our Community
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-200">
               Hear from those who've experienced the Malika difference
             </p>
           </div>
@@ -274,7 +279,7 @@ const About: React.FC = () => {
               <div
                 key={idx}
                 className="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all
-                          border border-gray-100 hover:border-primary/10"
+                    border border-gray-100 hover:border-primary/10"
               >
                 <div className="space-y-6">
                   <p className="text-gray-700 text-lg leading-relaxed italic">

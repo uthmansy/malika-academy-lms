@@ -1,11 +1,10 @@
-// src/hooks/useAddNewClass.ts
+// src/hooks/useEditClass.ts
 import { useState } from "react";
-import { FieldConfig, SelectOption } from "../types/comps";
-import { App } from "antd";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { FieldConfig, SelectOption } from "../types/comps"; // your custom form field config type
+import { App, Form, FormInstance } from "antd";
+import { useMutation, useQueryClient, useQuery } from "react-query";
 import { ZodError } from "zod";
 import {
-  addClass,
   getSections,
   getTeachersAll,
   getClassesAll,
@@ -15,8 +14,10 @@ import {
   sectionKeys,
   teachersKeys,
 } from "../constants/QUERY_KEYS";
+import { UpdateClassSchema } from "../zodSchemas/classes";
 import { STREAMS } from "../constants/ENUMS";
-import { ClassSchema } from "../zodSchemas/classes";
+import { updateClass } from "../helpers/apiFunctions";
+import { ClassJoined } from "../types/db";
 
 interface HookReturn {
   isModalOpen: boolean;
@@ -25,11 +26,17 @@ interface HookReturn {
   formConfig: FieldConfig[];
   handleSubmit: (values: any) => void;
   isLoading: boolean;
+  form: FormInstance<any>;
 }
 
-function useAddNewClass(): HookReturn {
+interface Props {
+  classRecord: ClassJoined;
+}
+
+function useEditClass({ classRecord }: Props): HookReturn {
   const { message } = App.useApp();
   const queryClient = useQueryClient();
+  const [form] = Form.useForm();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const handleOpenModal = () => setIsModalOpen(true);
@@ -76,33 +83,38 @@ function useAddNewClass(): HookReturn {
     },
   });
 
+  // Configure form fields – adjust field types, labels, and rules as needed
   const formConfig: FieldConfig[] = [
     {
       name: "name",
       label: "Class Name",
       type: "text",
-      required: true,
+      required: false,
+      defaultValue: classRecord.name,
     },
     {
       name: "section_id",
       label: "Section",
       type: "select",
-      required: true,
+      required: false,
       options: sectionsOptions || [],
+      defaultValue: classRecord.section_id,
     },
     {
       name: "next_class_id",
       label: "Next Class",
       type: "select",
-      required: true,
+      required: false,
       options: classesOptions || [],
+      defaultValue: classRecord.next_class_id,
     },
     {
       name: "stream",
       label: "Stream",
       type: "select",
-      required: true,
+      required: false,
       options: STREAMS.map((item) => ({ label: item, value: item })) || [],
+      defaultValue: classRecord.stream,
     },
     {
       name: "form_master_id",
@@ -110,44 +122,42 @@ function useAddNewClass(): HookReturn {
       type: "select",
       required: false,
       options: teachersOptions || [],
+      defaultValue: classRecord.form_master_id,
     },
     {
       name: "rank",
       label: "rank (lowest class 1)",
       type: "number",
-      required: true,
+      required: false,
+      defaultValue: classRecord.rank,
     },
   ];
 
   const { mutate: handleSubmit, isLoading } = useMutation({
     mutationFn: async (values: any) => {
       try {
-        await ClassSchema.parseAsync(values);
-        await addClass(values);
+        // Ensure we include the record's id
+        values.id = classRecord.id;
+        const payload = await UpdateClassSchema.parseAsync(values);
+        await updateClass(payload);
       } catch (error) {
         if (error instanceof ZodError) {
           console.error("Validation failed:", error.errors);
           throw error;
-        } else if (error instanceof Error) {
-          console.error("Unexpected error:", error.message);
-          throw new Error(error.message);
-        } else {
-          console.error("An unexpected error occurred:", error);
-          throw new Error("An unexpected error occurred");
         }
+        throw new Error(
+          error instanceof Error ? error.message : "Unknown error"
+        );
       }
     },
-    onError: (error) => {
-      if (error instanceof Error) {
-        message.error(error.message);
-      } else {
-        message.error("An unexpected error occurred");
-      }
+    onError: (error: Error) => {
+      message.error(error.message || "Failed to update Class");
     },
     onSuccess: () => {
-      message.success("Class added successfully");
+      message.success("Class updated successfully");
       handleCloseModal();
-      queryClient.invalidateQueries();
+      form.resetFields();
+      queryClient.invalidateQueries(); // refresh data queries
     },
   });
 
@@ -158,7 +168,8 @@ function useAddNewClass(): HookReturn {
     formConfig,
     handleSubmit,
     isLoading,
+    form,
   };
 }
 
-export default useAddNewClass;
+export default useEditClass;
