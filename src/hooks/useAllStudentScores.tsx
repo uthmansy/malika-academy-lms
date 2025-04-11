@@ -9,6 +9,7 @@ import { StudentScoreJoined } from "../types/db";
 import { App } from "antd";
 import { studentScoreKeys } from "../constants/QUERY_KEYS";
 import { useEffect } from "react";
+import { useStudentsRecordsStore } from "../store/studentsExamRecords";
 
 interface HookReturn {
   studentScores: StudentScoreJoined[];
@@ -36,12 +37,14 @@ function useAllStudentScores({
 }: Props): HookReturn {
   const { message } = App.useApp();
 
+  const { class: selectedClass } = useStudentsRecordsStore();
+
   const fetchData = async ({ pageParam = 1 }) => {
     const scores = await getStudentScores({
       pageNumber: pageParam,
       studentId,
       termId,
-      classFilter,
+      classFilter: selectedClass?.id || null,
       termFilter,
     });
     return scores;

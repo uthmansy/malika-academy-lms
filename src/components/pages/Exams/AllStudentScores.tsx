@@ -2,7 +2,7 @@
 import { Table } from "antd";
 import { studentScoresColumns } from "../../../tableColumns/studentScores";
 import useAllStudentScores from "../../../hooks/useAllStudentScores";
-import Filters from "../../Filters";
+// import Filters from "../../Filters";
 import useFilters from "../../../hooks/useFilters";
 
 interface Props {
@@ -11,14 +11,14 @@ interface Props {
 
 function AllStudentScores({ studentId }: Props) {
   const {
-    resetFilters,
+    // resetFilters,
     termFilter,
-    classOptions,
-    handleClassChange,
+    // classOptions,
+    // handleClassChange,
     classFilter,
     termOption,
-    handleTermOptionChange,
-    termOptionOptions,
+    // handleTermOptionChange,
+    // termOptionOptions,
   } = useFilters();
   const {
     studentScores,
@@ -35,7 +35,7 @@ function AllStudentScores({ studentId }: Props) {
 
   return (
     <>
-      <Filters
+      {/* <Filters
         onReset={resetFilters}
         classOptions={classOptions}
         classFilter={classFilter}
@@ -44,7 +44,7 @@ function AllStudentScores({ studentId }: Props) {
         termOption={termOption}
         onTermOptionChange={handleTermOptionChange}
         termOptionOptions={termOptionOptions}
-      />
+      /> */}
       <Table
         size="small"
         loading={isLoading || isFetchingNextPage || isRefetching}

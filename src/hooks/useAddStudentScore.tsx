@@ -6,12 +6,14 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ZodError } from "zod";
 import {
   addStudentScores,
-  getAllClasses,
+  // getAllClasses,
   getAllSubjects,
-  getAllTerms,
+  getCurrentTerm,
+  // getAllTerms,
 } from "../helpers/apiFunctions";
 import { StudentScoreSchema } from "../zodSchemas/studentScores";
-import { classesKeys, subjectsKeys, termsKeys } from "../constants/QUERY_KEYS";
+import { subjectsKeys } from "../constants/QUERY_KEYS";
+import { useStudentsRecordsStore } from "../store/studentsExamRecords";
 
 interface HookReturn {
   isModalOpen: boolean;
@@ -29,6 +31,7 @@ interface Props {
 function useAddStudentScore({ studentId }: Props): HookReturn {
   const { message } = App.useApp();
   const queryClient = useQueryClient();
+  const { class: selectedClass } = useStudentsRecordsStore();
 
   // Modal control
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -43,51 +46,51 @@ function useAddStudentScore({ studentId }: Props): HookReturn {
       message.error("Failed to load subjects");
     },
   });
-  const { data: classData = [] } = useQuery({
-    queryKey: classesKeys.getClassesAll,
-    queryFn: getAllClasses,
-    onError: () => {
-      message.error("Failed to load classes");
-    },
-  });
+  // const { data: classData = [] } = useQuery({
+  //   queryKey: classesKeys.getClassesAll,
+  //   queryFn: getAllClasses,
+  //   onError: () => {
+  //     message.error("Failed to load classes");
+  //   },
+  // });
 
-  const { data: termData = [] } = useQuery({
-    queryKey: termsKeys.getTermsAll,
-    queryFn: getAllTerms,
-    onError: () => {
-      message.error("Failed to load terms");
-    },
-  });
+  // const { data: termData = [] } = useQuery({
+  //   queryKey: termsKeys.getTermsAll,
+  //   queryFn: getAllTerms,
+  //   onError: () => {
+  //     message.error("Failed to load terms");
+  //   },
+  // });
 
   const subjectOptions: SelectOption[] = subjectData.map((item) => ({
     label: item.name,
     value: item.id,
   }));
-  const classOptions: SelectOption[] = classData.map((item: any) => ({
-    label: item.name,
-    value: item.id,
-  }));
-  const termOptions: SelectOption[] = termData.map((term) => ({
-    label: `${term.session} ${term.term}`,
-    value: term.id,
-  }));
+  // const classOptions: SelectOption[] = classData.map((item: any) => ({
+  //   label: item.name,
+  //   value: item.id,
+  // }));
+  // const termOptions: SelectOption[] = termData.map((term) => ({
+  //   label: `${term.session} ${term.term}`,
+  //   value: term.id,
+  // }));
 
   // Build the form configuration using a dynamic field
   const formConfig: FieldConfig[] = [
-    {
-      name: "class_id",
-      label: "Class",
-      type: "select",
-      options: classOptions,
-      required: true,
-    },
-    {
-      name: "term_id",
-      label: "Term",
-      type: "select",
-      options: termOptions,
-      required: true,
-    },
+    // {
+    //   name: "class_id",
+    //   label: "Class",
+    //   type: "select",
+    //   options: classOptions,
+    //   required: true,
+    // },
+    // {
+    //   name: "term_id",
+    //   label: "Term",
+    //   type: "select",
+    //   options: termOptions,
+    //   required: true,
+    // },
     {
       name: "assessment_date",
       label: "Assessment Date",
@@ -136,12 +139,13 @@ function useAddStudentScore({ studentId }: Props): HookReturn {
   const { mutate: handleSubmit, isLoading } = useMutation({
     mutationFn: async (values: any) => {
       try {
+        const currentTerm = await getCurrentTerm();
         // Transform dynamic form values into the expected payload array
-        const payload = values.scores.map((item: any) => ({
+        let payload = values.scores.map((item: any) => ({
           student_id: studentId,
-          term_id: values.term_id,
+          term_id: values.term_id || currentTerm.id,
           subject_id: item.subject_id,
-          class_id: values.class_id,
+          class_id: values.class_id || selectedClass?.id,
           ca_1: item.ca_1,
           ca_2: item.ca_2,
           exam: item.exam,
@@ -149,7 +153,7 @@ function useAddStudentScore({ studentId }: Props): HookReturn {
         }));
 
         // Validate the payload as an array using Zod
-        await StudentScoreSchema.array().parseAsync(payload);
+        payload = await StudentScoreSchema.array().parseAsync(payload);
 
         // Call the API helper to insert the student scores
         await addStudentScores(payload);

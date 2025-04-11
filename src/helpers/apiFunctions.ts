@@ -556,6 +556,15 @@ export const getStudentScores = async ({
   classFilter: string | null;
   termFilter: string | null;
 }): Promise<StudentScoreJoined[]> => {
+  const { data: currentTerm, error: termError } = await supabase
+    .rpc("get_current_term")
+    .select("id")
+    .returns<Term[]>()
+    .single();
+  if (termError) {
+    console.error(termError);
+    throw new Error(termError.message);
+  }
   let q = supabase
     .from("student_scores")
     .select(
@@ -565,7 +574,11 @@ export const getStudentScores = async ({
     .range((pageNumber - 1) * 50, pageNumber * 50 - 1)
     .order("created_at", { ascending: false });
   if (termFilter) q = q.eq("term_table.term", termFilter);
-  if (termId) q = q.eq("term_id", termId);
+  if (termId) {
+    q = q.eq("term_id", termId);
+  } else {
+    q = q.eq("term_id", currentTerm.id);
+  }
   if (classFilter) q = q.eq("class_id", classFilter);
   const { data, error } = await q;
   if (error) throw error.message;

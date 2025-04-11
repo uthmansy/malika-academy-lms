@@ -1,7 +1,6 @@
 // useStudentsRecords.ts
 import { useQuery } from "react-query";
 import { message } from "antd";
-import { useState } from "react";
 import {
   getAllTerms,
   getClassesAll,
@@ -13,23 +12,22 @@ import {
   classroomsKeys,
   termsKeys,
 } from "../constants/QUERY_KEYS";
-
-export type StudentsRecordsState = {
-  term: Term | null;
-  class: Class | null;
-  classroom: Classroom | null;
-};
+import { useStudentsRecordsStore } from "../store/studentsExamRecords";
 
 export const useStudentsRecords = () => {
-  const [state, setState] = useState<StudentsRecordsState>({
-    term: null,
-    class: null,
-    classroom: null,
-  });
+  // Get state and state updater functions from Zustand store
+  const {
+    term,
+    class: selectedClass,
+    classroom,
+    setClass,
+    setClassroom,
+    setTerm,
+  } = useStudentsRecordsStore();
 
-  // Fetch classes based on selected class (no dependency on term)
+  // Fetch classes (independent of term)
   const fetchClasses = async (): Promise<Class[]> => {
-    const data = await getClassesAll(); // Replace with your API call
+    const data = await getClassesAll();
     return data;
   };
   const { data: classes = [], isLoading: loadingClasses } = useQuery({
@@ -38,9 +36,9 @@ export const useStudentsRecords = () => {
     onError: () => message.error("Failed to load classes"),
   });
 
-  // Fetch classrooms based on selected class
+  // Fetch classrooms based on the selected class
   const fetchClassrooms = async (classId?: string): Promise<Classroom[]> => {
-    const data = await getClassroomsByClass(classId); // Replace with your API call
+    const data = await getClassroomsByClass(classId);
     return data;
   };
   const {
@@ -48,57 +46,37 @@ export const useStudentsRecords = () => {
     isLoading: loadingClassrooms,
     isRefetching: isRefetchingClassrooms,
   } = useQuery({
-    queryKey: [classroomsKeys.byClass, state.class],
-    queryFn: () => fetchClassrooms(state.class?.id),
-    enabled: !!state.class, // Only fetch if a class is selected
+    queryKey: [classroomsKeys.byClass, selectedClass],
+    queryFn: () => fetchClassrooms(selectedClass?.id),
+    enabled: !!selectedClass, // Only fetch if a class is selected
     onError: () => message.error("Failed to load classrooms"),
   });
 
-  // Fetch terms based on selected classroom
+  // Fetch terms based on the selected classroom
   const fetchTerms = async (): Promise<Term[]> => {
-    const data = await getAllTerms(); // Replace with your API call
+    const data = await getAllTerms();
     return data;
   };
   const { data: terms = [], isLoading: loadingTerms } = useQuery({
     queryKey: termsKeys.getTermsAll,
-    queryFn: () => fetchTerms(),
-    enabled: !!state.classroom, // Only fetch if a classroom is selected
+    queryFn: fetchTerms,
+    enabled: !!classroom, // Only fetch if a classroom is selected
     onError: () => message.error("Failed to load terms"),
   });
 
-  // Update state methods with class → classroom → term hierarchy
-  const setClass = (selectedClass: Class) => {
-    setState((prev) => ({
-      ...prev,
-      class: selectedClass,
-      classroom: null, // Reset classroom when class changes
-      term: null, // Reset term when class changes
-    }));
-  };
-
-  const setClassroom = (selectedClassroom: Classroom) => {
-    setState((prev) => ({
-      ...prev,
-      classroom: selectedClassroom,
-      term: null, // Reset term when classroom changes
-    }));
-  };
-
-  const setTerm = (selectedTerm: Term) => {
-    setState((prev) => ({
-      ...prev,
-      term: selectedTerm,
-    }));
-  };
-
   return {
-    state,
+    state: {
+      term,
+      class: selectedClass,
+      classroom,
+    },
     terms,
     classes,
     classrooms,
     loadingTerms,
     loadingClasses,
-    loadingClassrooms: loadingClassrooms || isRefetchingClassrooms,
+    loadingClassrooms:
+      loadingClasses || isRefetchingClassrooms || loadingClassrooms,
     setTerm,
     setClass,
     setClassroom,
