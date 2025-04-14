@@ -12,7 +12,7 @@ const Header = () => {
         <Container className="flex justify-between items-center">
           <div className="text-gray-600">
             <span className="mr-6">+1 (000) 000 00 00</span>
-            <span>info@companyname.com</span>
+            <span>info@malikaacademy.com</span>
           </div>
           <div className="space-x-4">
             <button className="hover:text-primary">Register</button>
@@ -65,14 +65,7 @@ const Header = () => {
                 Teachers
               </a>
             </li>
-            <li>
-              <a
-                href="#"
-                className="text-gray-700 hover:text-primary transition-colors"
-              >
-                Shop
-              </a>
-            </li>
+
             <li>
               <Link
                 to={"/blog"}

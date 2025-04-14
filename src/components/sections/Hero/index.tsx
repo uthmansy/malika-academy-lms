@@ -22,7 +22,7 @@ const Hero: React.FC = () => {
             Need Guidance? We're Here to Help
           </p>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-8 leading-tight">
-            Welcome to <span className="text-primary">Premier University</span>
+            Welcome to <span className="text-primary">Malika Academy</span>
           </h1>
           <button className="bg-primary hover:bg-primary-dark transition-colors px-8 py-4 rounded-full text-white font-medium shadow-lg">
             Explore Programs
@@ -35,9 +35,9 @@ const Hero: React.FC = () => {
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {[
-              { title: "Business Courses", link: "#" },
-              { title: "Travel & Tourism", link: "#" },
-              { title: "Fashion Design", link: "#" },
+              { title: "Child's Pillar", link: "#" },
+              { title: "Future Hope", link: "#" },
+              { title: "Building Leaders", link: "#" },
             ].map((item, index) => (
               <div
                 key={index}

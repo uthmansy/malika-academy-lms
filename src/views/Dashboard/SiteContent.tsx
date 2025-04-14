@@ -4,6 +4,11 @@ import ROUTES from "../../constants/ROUTES";
 import Home from "../../components/pages/home/index.tsx";
 import { LOGO } from "../../assets/images/index.ts";
 import School from "../../components/pages/School/index.tsx";
+import Classes from "../../components/pages/Classes/index.tsx";
+import Subjects from "../../components/pages/Subjects/index.tsx";
+import Terms from "../../components/pages/Terms/index.tsx";
+import TerminalResults from "../../components/pages/TerminalResults/index.tsx";
+import StudentsRecords from "../../components/pages/studentsRecords/index.tsx";
 import StudentsSection from "../../components/pages/StudentsSection/index.tsx";
 import Users from "../../components/pages/Users/index.tsx";
 import Hr from "../../components/pages/Hr/index.tsx";
@@ -39,7 +44,15 @@ function SiteContent() {
         <Routes>
           <Route path={`${ROUTES.home}/*`} element={<Home />} />
           <Route path={`${ROUTES.school}/*`} element={<School />} />
+          <Route path={`${ROUTES.classes}/*`} element={<Classes />} />
+          <Route path={`${ROUTES.terms}/*`} element={<Terms />} />
+          <Route path={`${ROUTES.subjects}/*`} element={<Subjects />} />
           <Route path={`${ROUTES.students}/*`} element={<StudentsSection />} />
+          <Route path={`${ROUTES.exams}/*`} element={<StudentsRecords />} />
+          <Route
+            path={`${ROUTES.terminalResults}/*`}
+            element={<TerminalResults />}
+          />
           <Route path={`${ROUTES.users}/*`} element={<Users />} />
           <Route path={`${ROUTES.hr}/*`} element={<Hr />} />
           <Route path={`${ROUTES.accounting}/*`} element={<Accounting />} />
