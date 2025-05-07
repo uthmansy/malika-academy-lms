@@ -18,7 +18,7 @@ interface HookReturn {
 }
 
 interface Prop {
-  record: TerminalResultJoined;
+  record: TerminalResultJoined | undefined;
 }
 
 function useEditTerminalResult({ record }: Prop): HookReturn {
@@ -36,7 +36,7 @@ function useEditTerminalResult({ record }: Prop): HookReturn {
       type: "number",
       max: 5,
       required: false,
-      defaultValue: record.attentiveness,
+      defaultValue: record?.attentiveness,
     },
     {
       name: "honesty",
@@ -44,7 +44,7 @@ function useEditTerminalResult({ record }: Prop): HookReturn {
       type: "number",
       max: 5,
       required: false,
-      defaultValue: record.honesty,
+      defaultValue: record?.honesty,
     },
     {
       name: "neatness",
@@ -52,7 +52,7 @@ function useEditTerminalResult({ record }: Prop): HookReturn {
       type: "number",
       max: 5,
       required: false,
-      defaultValue: record.neatness,
+      defaultValue: record?.neatness,
     },
     {
       name: "politeness",
@@ -60,7 +60,7 @@ function useEditTerminalResult({ record }: Prop): HookReturn {
       type: "number",
       max: 5,
       required: false,
-      defaultValue: record.politeness,
+      defaultValue: record?.politeness,
     },
     {
       name: "punctuality",
@@ -68,7 +68,7 @@ function useEditTerminalResult({ record }: Prop): HookReturn {
       type: "number",
       max: 5,
       required: false,
-      defaultValue: record.punctuality,
+      defaultValue: record?.punctuality,
     },
     {
       name: "relationship_with_others",
@@ -76,7 +76,7 @@ function useEditTerminalResult({ record }: Prop): HookReturn {
       type: "number",
       max: 5,
       required: false,
-      defaultValue: record.relationship_with_others,
+      defaultValue: record?.relationship_with_others,
     },
     {
       name: "club_society",
@@ -84,7 +84,7 @@ function useEditTerminalResult({ record }: Prop): HookReturn {
       type: "number",
       max: 5,
       required: false,
-      defaultValue: record.club_society,
+      defaultValue: record?.club_society,
     },
     {
       name: "drawing_and_painting",
@@ -92,7 +92,7 @@ function useEditTerminalResult({ record }: Prop): HookReturn {
       type: "number",
       max: 5,
       required: false,
-      defaultValue: record.drawing_and_painting,
+      defaultValue: record?.drawing_and_painting,
     },
     {
       name: "hand_writing",
@@ -100,7 +100,7 @@ function useEditTerminalResult({ record }: Prop): HookReturn {
       type: "number",
       max: 5,
       required: false,
-      defaultValue: record.hand_writing,
+      defaultValue: record?.hand_writing,
     },
     {
       name: "hobbies",
@@ -108,7 +108,7 @@ function useEditTerminalResult({ record }: Prop): HookReturn {
       type: "number",
       max: 5,
       required: false,
-      defaultValue: record.hobbies,
+      defaultValue: record?.hobbies,
     },
     {
       name: "speech_fluency",
@@ -116,7 +116,7 @@ function useEditTerminalResult({ record }: Prop): HookReturn {
       type: "number",
       max: 5,
       required: false,
-      defaultValue: record.speech_fluency,
+      defaultValue: record?.speech_fluency,
     },
     {
       name: "sport_and_game",
@@ -124,28 +124,28 @@ function useEditTerminalResult({ record }: Prop): HookReturn {
       type: "number",
       max: 5,
       required: false,
-      defaultValue: record.sport_and_game,
+      defaultValue: record?.sport_and_game,
     },
     {
       name: "class_teacher_remarks",
       label: "Class Teacher Remarks",
       type: "text",
       required: false,
-      defaultValue: record.class_teacher_remarks,
+      defaultValue: record?.class_teacher_remarks,
     },
     {
       name: "head_teacher_remarks",
       label: "Head Teacher Remarks",
       type: "text",
       required: false,
-      defaultValue: record.head_teacher_remarks,
+      defaultValue: record?.head_teacher_remarks,
     },
   ];
 
   const { mutate: handleSubmit, isLoading } = useMutation({
     mutationFn: async (values: any) => {
       try {
-        values.id = record.id;
+        values.id = record?.id;
         const payload = await UpdateTerminalResultSchema.parseAsync(values);
         await updateTerminalResult(payload);
       } catch (error) {

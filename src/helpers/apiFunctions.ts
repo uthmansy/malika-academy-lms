@@ -708,6 +708,36 @@ export const getTerminalResults = async ({
   if (error) throw new Error(error.message);
   return data;
 };
+export const getStudentTerminalResult = async ({
+  classId,
+  termId,
+  studentId,
+}: {
+  classId: string;
+  termId: string;
+  studentId: string;
+}): Promise<TerminalResultJoined> => {
+  // Build the base query. Note that we join related tables for richer data.
+  let query = supabase
+    .from("terminal_results")
+    .select(
+      `
+      *,
+      student:student_id(*),
+      term:term_id(*),
+      class:class_id(*),
+      classroom:classroom_id(*)
+    `
+    )
+    .eq("term_id", termId)
+    .eq("student_id", studentId)
+    .eq("class_id", classId)
+    .single();
+
+  const { data, error } = await query;
+  if (error) throw new Error(error.message);
+  return data;
+};
 
 export const updateTerminalResult = async (
   payload: UpdateTerminalResult

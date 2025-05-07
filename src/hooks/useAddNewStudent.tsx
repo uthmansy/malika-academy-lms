@@ -58,8 +58,9 @@ function useAddNewStudent() {
     },
     {
       name: "fee_discount",
-      label: "Fee Discount",
+      label: "Fee Discount (%)",
       type: "number",
+      suffix: "%",
       required: true,
     },
     {

@@ -1,16 +1,16 @@
-// src/components/pages/studentScores/AddStudentScore.tsx
+// src/components/pages/TerminalResult/TerminalResult.tsx
 import { Button, Modal } from "antd";
-import { TerminalResultJoined } from "../../../types/db";
+import { StudentClassroomsJoined } from "../../../types/db";
+import useStudentReportCard from "../../../hooks/useStudentReportCard";
 import DocumentViewer from "../../utils/DocumentViewer";
 import ReportCard from "../../docs/ReportSheet";
-import useStudentReportCard from "../../../hooks/useStudentReportCard";
 
 interface Props {
-  record: TerminalResultJoined;
+  record: StudentClassroomsJoined;
 }
 
-function StudentReportCard({ record }: Props) {
-  const { student_id, term_id, class_id } = record;
+function TerminalResult({ record }: Props) {
+  const { class_id, term_id, student_id } = record;
   const {
     isModalOpen,
     handleOpenModal,
@@ -22,15 +22,15 @@ function StudentReportCard({ record }: Props) {
 
   return (
     <>
-      <Button onClick={handleOpenModal} type="primary">
-        Report Card
+      <Button onClick={handleOpenModal} type="default">
+        Terminal Result
       </Button>
       <Modal
         footer={null}
-        title="Student Report Card"
+        title={`Terminal Results for ${record.student_table.first_name} ${record.student_table.last_name}`}
         open={isModalOpen}
         onCancel={handleCloseModal}
-        width={700}
+        width={800}
       >
         {scores && subjects && terminalResult ? (
           <DocumentViewer fileName="sample">
@@ -48,4 +48,4 @@ function StudentReportCard({ record }: Props) {
   );
 }
 
-export default StudentReportCard;
+export default TerminalResult;

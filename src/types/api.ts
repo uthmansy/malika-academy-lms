@@ -22,6 +22,7 @@ export interface ApiFilterOptions {
   debouncedSearchTerm?: string | null;
   itemFilter?: string | null;
   classroomFilter?: string | null;
+  classFilter?: string | null;
   shiftFilter?: string | null;
   expenseCategoryFilter?: string | null;
   studentId?: string | null;
